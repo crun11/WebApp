@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Klimmzug Plan</title>
+
+  <!-- iOS WebApp / PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Klimmzüge">
+  
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-success: #22c55e;
+      --border: #334155;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px 16px 40px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin: 0 0 6px;
+      color: var(--accent);
+    }
+
+    p.subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .phase-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .phase-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+
+    .phase-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .workout-item {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .workout-item input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--accent);
+      border-radius: 6px;
+      margin-right: 14px;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .workout-item input[type="checkbox"]:checked {
+      background-color: var(--accent-success);
+      border-color: var(--accent-success);
+    }
+
+    .workout-item input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      left: 5px;
+      top: 0px;
+    }
+
+    .workout-info {
+      flex-grow: 1;
+    }
+
+    .workout-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .workout-detail {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .tips-card {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .tips-card h3 {
+      margin-top: 0;
+      color: var(--accent);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Klimmzug-Trainingsplan</h1>
+    <p class="subtitle">Ziel: 20+ Wiederholungen ohne Erschöpfung</p>
+  </header>
+
+  <!-- Phase 1 -->
+  <div class="phase-card">
+    <div class="phase-title">Phase 1: Volumen aufbauen (Woche 1–3)</div>
+    <div class="phase-desc">Ziel: Viel Volumen ohne Atemnot sammeln. 3 Einheiten / Woche.</div>
+    
+    <div id="phase1-list"></div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="phase-card">
+    <div class="phase-title">Phase 2: Intensität & Pyramide (Woche 4–5)</div>
+    <div class="phase-desc">Ziel: Kraftausdauer gezielt ausbauen.</div>
+    
+    <div id="phase2-list"></div>
+  </div>
+
+  <!-- Phase 3 -->
+  <div class="phase-card">
+    <div class="phase-title">Phase 3: Deload & Test (Woche 6)</div>
+    <div class="phase-desc">Ziel: Erholung & Vorbereitung auf den neuen Rekord!</div>
+    
+    <div id="phase3-list"></div>
+  </div>
+
+  <!-- Tipps -->
+  <div class="tips-card">
+    <h3>💡 Erholung & Technik</h3>
+    <ul>
+      <li><strong>Kein Muskelversagen:</strong> Höre immer 3–5 Wdh. vor deinem Limit auf.</li>
+      <li><strong>Atmen:</strong> Beim Hochziehen ausatmen, nicht die Luft anhalten.</li>
+      <li><strong>Gelenke schonen:</strong> Bei Ellbogenziehen den Griff wechseln (z.B. Untergriff).</li>
+    </ul>
+  </div>
+
+  <script>
+    const planData = [
+      {
+        phaseId: 'phase1-list',
+        items: [
+          { id: 'w1e1', title: 'Woche 1 - Tag 1', detail: '5 Sätze × 9-10 Wdh. (oder 6-8×8 Wdh. über den Tag)' },
+          { id: 'w1e2', title: 'Woche 1 - Tag 2', detail: '5 Sätze × 9-10 Wdh. (oder 6-8×8 Wdh. über den Tag)' },
+          { id: 'w1e3', title: 'Woche 1 - Tag 3', detail: '5 Sätze × 9-10 Wdh. (oder 6-8×8 Wdh. über den Tag)' },
+          { id: 'w2e1', title: 'Woche 2 - Tag 1', detail: '5 Sätze × 9-10 Wdh. (Pause: 2,5-3 Min)' },
+          { id: 'w2e2', title: 'Woche 2 - Tag 2', detail: '5 Sätze × 9-10 Wdh. (Pause: 2,5-3 Min)' },
+          { id: 'w2e3', title: 'Woche 2 - Tag 3', detail: '5 Sätze × 9-10 Wdh. (Pause: 2,5-3 Min)' },
+          { id: 'w3e1', title: 'Woche 3 - Tag 1', detail: '5 Sätze × 10 Wdh.' },
+          { id: 'w3e2', title: 'Woche 3 - Tag 2', detail: '5 Sätze × 10 Wdh.' },
+          { id: 'w3e3', title: 'Woche 3 - Tag 3', detail: '5 Sätze × 10 Wdh.' }
+        ]
+      },
+      {
+        phaseId: 'phase2-list',
+        items: [
+          { id: 'w4e1', title: 'Woche 4 - Tag 1 (Pyramide)', detail: '4 - 8 - 12 - 10 - 8 - 6 Wdh. (Pause: 2 Min)' },
+          { id: 'w4e2', title: 'Woche 4 - Tag 2 (Kraft)', detail: '4 Sätze × 6 Wdh. (mit +5kg Rucksack oder langsam)' },
+          { id: 'w4e3', title: 'Woche 4 - Tag 3 (Volumen)', detail: '4 Sätze × 11 Wdh. (Pause: 2,5 Min)' },
+          { id: 'w5e1', title: 'Woche 5 - Tag 1 (Pyramide)', detail: '4 - 8 - 12 - 10 - 8 - 6 Wdh.' },
+          { id: 'w5e2', title: 'Woche 5 - Tag 2 (Kraft)', detail: '4 Sätze × 6 Wdh. (kontrolliert & schwer)' },
+          { id: 'w5e3', title: 'Woche 5 - Tag 3 (Volumen)', detail: '4 Sätze × 12 Wdh.' }
+        ]
+      },
+      {
+        phaseId: 'phase3-list',
+        items: [
+          { id: 'w6e1', title: 'Woche 6 - Tag 1 (Deload)', detail: '3 Sätze × 8 Wdh. (sehr locker)' },
+          { id: 'w6e2', title: 'Di–Do: Regeneration', detail: 'Absolute Pause, gut schlafen & dehnen' },
+          { id: 'w6e3', title: 'Freitag: TESTTAG 🎉', detail: '1 Maximalsatz auf Rekord-Versuch!' }
+        ]
+      }
+    ];
+
+    function renderPlan() {
+      planData.forEach(phase => {
+        const container = document.getElementById(phase.phaseId);
+        phase.items.forEach(item => {
+          const isChecked = localStorage.getItem(item.id) === 'true';
+          const el = document.createElement('div');
+          el.className = 'workout-item';
+          el.innerHTML = `
+            <input type="checkbox" id="${item.id}" ${isChecked ? 'checked' : ''} onchange="toggleCheck('${item.id}')">
+            <div class="workout-info">
+              <div class="workout-title">${item.title}</div>
+              <div class="workout-detail">${item.detail}</div>
+            </div>
+          `;
+          container.appendChild(el);
+        });
+      });
+    }
+
+    function toggleCheck(id) {
+      const checkbox = document.getElementById(id);
+      localStorage.setItem(id, checkbox.checked);
+    }
+
+    renderPlan();
+  </script>
+</body>
+</html>
