@@ -3,13 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Klimmzug Plan</title>
-
-  <!-- iOS WebApp / PWA Meta Tags -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Klimmzüge">
-  
+  <title>Klimmzug Plan 25+</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -26,57 +20,85 @@
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
-      padding: 20px 16px 40px;
+      padding: 20px 16px 50px;
       -webkit-tap-highlight-color: transparent;
     }
 
     header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
 
     h1 {
-      font-size: 1.6rem;
-      margin: 0 0 6px;
+      font-size: 1.5rem;
+      margin: 0 0 4px;
       color: var(--accent);
     }
 
     p.subtitle {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
       margin: 0;
     }
 
-    .phase-card {
+    .progress-wrap {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: #0f172a;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent-success);
+      transition: width 0.3s ease;
+    }
+
+    .week-card {
       background: var(--card-bg);
       border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 20px;
+      padding: 16px;
+      margin-bottom: 16px;
       border: 1px solid var(--border);
     }
 
-    .phase-title {
-      font-size: 1.2rem;
+    .week-title {
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--accent);
-      margin-top: 0;
-      margin-bottom: 4px;
-    }
-
-    .phase-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 16px;
+      margin: 0 0 12px;
     }
 
     .workout-item {
       display: flex;
       align-items: center;
       background: rgba(255, 255, 255, 0.03);
-      padding: 12px 14px;
+      padding: 11px 12px;
       border-radius: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .workout-item:last-child {
+      margin-bottom: 0;
     }
 
     .workout-item input[type="checkbox"] {
@@ -86,7 +108,7 @@
       height: 24px;
       border: 2px solid var(--accent);
       border-radius: 6px;
-      margin-right: 14px;
+      margin-right: 12px;
       outline: none;
       cursor: pointer;
       position: relative;
@@ -114,142 +136,292 @@
 
     .workout-title {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .workout-detail {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
-    .tips-card {
-      background: rgba(56, 189, 248, 0.08);
-      border: 1px solid rgba(56, 189, 248, 0.2);
+    .log-section {
+      background: var(--card-bg);
       border-radius: 16px;
       padding: 16px;
-      font-size: 0.85rem;
-      line-height: 1.4;
+      margin-top: 24px;
+      border: 1px solid var(--border);
     }
 
-    .tips-card h3 {
-      margin-top: 0;
+    .log-section h2 {
+      font-size: 1.05rem;
       color: var(--accent);
+      margin: 0 0 12px;
     }
 
-    ul {
-      margin: 0;
-      padding-left: 18px;
+    .form-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
-    li {
+    input[type="text"] {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--accent-success);
+      color: #0f172a;
+      border: none;
+      padding: 11px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0 10px;
+    }
+
+    .log-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 11px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
       margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+
+    .del-btn {
+      background: none;
+      border: none;
+      color: #ef4444;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .status-msg {
+      font-size: 0.78rem;
+      color: var(--accent-success);
+      text-align: center;
+      margin-top: 6px;
+      min-height: 16px;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Klimmzug-Trainingsplan</h1>
-    <p class="subtitle">Ziel: 20+ Wiederholungen ohne Erschöpfung</p>
+    <h1>Mission 25 Klimmzüge</h1>
+    <p class="subtitle">6-Wochen-Plan · Volumen, Dichte & Peak</p>
   </header>
 
-  <!-- Phase 1 -->
-  <div class="phase-card">
-    <div class="phase-title">Phase 1: Volumen aufbauen (Woche 1–3)</div>
-    <div class="phase-desc">Ziel: Viel Volumen ohne Atemnot sammeln. 3 Einheiten / Woche.</div>
-    
-    <div id="phase1-list"></div>
+  <div class="progress-wrap">
+    <div class="progress-header">
+      <span>Fortschritt</span>
+      <span id="progress-text">0 / 18 (0%)</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
   </div>
 
-  <!-- Phase 2 -->
-  <div class="phase-card">
-    <div class="phase-title">Phase 2: Intensität & Pyramide (Woche 4–5)</div>
-    <div class="phase-desc">Ziel: Kraftausdauer gezielt ausbauen.</div>
-    
-    <div id="phase2-list"></div>
-  </div>
+  <div id="plan-container"></div>
 
-  <!-- Phase 3 -->
-  <div class="phase-card">
-    <div class="phase-title">Phase 3: Deload & Test (Woche 6)</div>
-    <div class="phase-desc">Ziel: Erholung & Vorbereitung auf den neuen Rekord!</div>
-    
-    <div id="phase3-list"></div>
-  </div>
+  <!-- Notizen & Backup -->
+  <div class="log-section">
+    <h2>Trainingsnotizen & Logbuch</h2>
+    <div class="form-row">
+      <input type="text" id="inp-note" placeholder="z. B. W2 Tag 2: 90s Pause gut machbar">
+    </div>
+    <button class="btn-primary" onclick="addNote()">+ Notiz speichern</button>
+    <div class="status-msg" id="status-msg"></div>
 
-  <!-- Tipps -->
-  <div class="tips-card">
-    <h3>💡 Erholung & Technik</h3>
-    <ul>
-      <li><strong>Kein Muskelversagen:</strong> Höre immer 3–5 Wdh. vor deinem Limit auf.</li>
-      <li><strong>Atmen:</strong> Beim Hochziehen ausatmen, nicht die Luft anhalten.</li>
-      <li><strong>Gelenke schonen:</strong> Bei Ellbogenziehen den Griff wechseln (z.B. Untergriff).</li>
-    </ul>
+    <div class="log-header">
+      <span style="font-size:0.85rem;font-weight:600;color:var(--text-muted);">Gespeicherte Notizen</span>
+      <button class="btn-secondary" onclick="copyBackup()">Backup kopieren</button>
+    </div>
+    <div id="notes-list"></div>
   </div>
 
   <script>
-    const planData = [
+    const weeks = [
       {
-        phaseId: 'phase1-list',
-        items: [
-          { id: 'w1e1', title: 'Woche 1 - Tag 1', detail: '5 Sätze × 9-10 Wdh. (oder 6-8×8 Wdh. über den Tag)' },
-          { id: 'w1e2', title: 'Woche 1 - Tag 2', detail: '5 Sätze × 9-10 Wdh. (oder 6-8×8 Wdh. über den Tag)' },
-          { id: 'w1e3', title: 'Woche 1 - Tag 3', detail: '5 Sätze × 9-10 Wdh. (oder 6-8×8 Wdh. über den Tag)' },
-          { id: 'w2e1', title: 'Woche 2 - Tag 1', detail: '5 Sätze × 9-10 Wdh. (Pause: 2,5-3 Min)' },
-          { id: 'w2e2', title: 'Woche 2 - Tag 2', detail: '5 Sätze × 9-10 Wdh. (Pause: 2,5-3 Min)' },
-          { id: 'w2e3', title: 'Woche 2 - Tag 3', detail: '5 Sätze × 9-10 Wdh. (Pause: 2,5-3 Min)' },
-          { id: 'w3e1', title: 'Woche 3 - Tag 1', detail: '5 Sätze × 10 Wdh.' },
-          { id: 'w3e2', title: 'Woche 3 - Tag 2', detail: '5 Sätze × 10 Wdh.' },
-          { id: 'w3e3', title: 'Woche 3 - Tag 3', detail: '5 Sätze × 10 Wdh.' }
+        title: 'Woche 1 – Grundlagen aufbauen',
+        days: [
+          { id: 'w1d1', title: 'Tag 1: Volumen', detail: '5 Sätze × 11 Wdh. (Pause: 2,5 Min.)' },
+          { id: 'w1d2', title: 'Tag 2: Pyramide', detail: '4 – 8 – 12 – 10 – 8 – 6 Wdh. (Pause: 2 Min.)' },
+          { id: 'w1d3', title: 'Tag 3: Kraftausdauer', detail: '5 Sätze × 12 Wdh. (Pause: 3 Min.)' }
         ]
       },
       {
-        phaseId: 'phase2-list',
-        items: [
-          { id: 'w4e1', title: 'Woche 4 - Tag 1 (Pyramide)', detail: '4 - 8 - 12 - 10 - 8 - 6 Wdh. (Pause: 2 Min)' },
-          { id: 'w4e2', title: 'Woche 4 - Tag 2 (Kraft)', detail: '4 Sätze × 6 Wdh. (mit +5kg Rucksack oder langsam)' },
-          { id: 'w4e3', title: 'Woche 4 - Tag 3 (Volumen)', detail: '4 Sätze × 11 Wdh. (Pause: 2,5 Min)' },
-          { id: 'w5e1', title: 'Woche 5 - Tag 1 (Pyramide)', detail: '4 - 8 - 12 - 10 - 8 - 6 Wdh.' },
-          { id: 'w5e2', title: 'Woche 5 - Tag 2 (Kraft)', detail: '4 Sätze × 6 Wdh. (kontrolliert & schwer)' },
-          { id: 'w5e3', title: 'Woche 5 - Tag 3 (Volumen)', detail: '4 Sätze × 12 Wdh.' }
+        title: 'Woche 2 – Dichte & Volumen',
+        days: [
+          { id: 'w2d1', title: 'Tag 1: Volumen', detail: '5 Sätze × 12 Wdh. (Pause: 2,5 Min.)' },
+          { id: 'w2d2', title: 'Tag 2: Dichte-Training', detail: '6 Sätze × 10 Wdh. (Pause: nur 90 Sek.!)' },
+          { id: 'w2d3', title: 'Tag 3: Pyramide', detail: '5 – 9 – 13 – 11 – 8 – 6 Wdh. (Pause: 2 Min.)' }
         ]
       },
       {
-        phaseId: 'phase3-list',
-        items: [
-          { id: 'w6e1', title: 'Woche 6 - Tag 1 (Deload)', detail: '3 Sätze × 8 Wdh. (sehr locker)' },
-          { id: 'w6e2', title: 'Di–Do: Regeneration', detail: 'Absolute Pause, gut schlafen & dehnen' },
-          { id: 'w6e3', title: 'Freitag: TESTTAG 🎉', detail: '1 Maximalsatz auf Rekord-Versuch!' }
+        title: 'Woche 3 – Belastung steigern',
+        days: [
+          { id: 'w3d1', title: 'Tag 1: Volumen', detail: '5 Sätze × 13 Wdh. (Pause: 3 Min.)' },
+          { id: 'w3d2', title: 'Tag 2: Dichte-Training', detail: '6 Sätze × 11 Wdh. (Pause: nur 90 Sek.!)' },
+          { id: 'w3d3', title: 'Tag 3: Kraftausdauer', detail: '4 Sätze × 14 Wdh. (Pause: 3 Min.)' }
+        ]
+      },
+      {
+        title: 'Woche 4 – Peak-Volumen',
+        days: [
+          { id: 'w4d1', title: 'Tag 1: Volumen', detail: '5 Sätze × 13 Wdh. (Pause: 2,5 Min.)' },
+          { id: 'w4d2', title: 'Tag 2: Hohe Pyramide', detail: '5 – 10 – 15 – 12 – 9 – 6 Wdh. (Pause: 2 Min.)' },
+          { id: 'w4d3', title: 'Tag 3: Kraftausdauer', detail: '5 Sätze × 14 Wdh. (Pause: 3 Min.)' }
+        ]
+      },
+      {
+        title: 'Woche 5 – Feinschliff',
+        days: [
+          { id: 'w5d1', title: 'Tag 1: Volumen', detail: '4 Sätze × 14 Wdh. (Pause: 3 Min.)' },
+          { id: 'w5d2', title: 'Tag 2: Dichte-Training', detail: '5 Sätze × 12 Wdh. (Pause: 90 Sek.)' },
+          { id: 'w5d3', title: 'Tag 3: Kraftausdauer', detail: '4 Sätze × 15 Wdh. (Pause: 3 Min.)' }
+        ]
+      },
+      {
+        title: 'Woche 6 – Deload & Test',
+        days: [
+          { id: 'w6d1', title: 'Tag 1: Deload (Montag)', detail: '3 Sätze × 8 Wdh. (sehr locker, kein Limit)' },
+          { id: 'w6d2', title: 'Di–Do: Regeneration', detail: 'Komplette Pause, gut schlafen & essen' },
+          { id: 'w6d3', title: 'Freitag: TESTTAG 🎉', detail: 'Warm-up + 1 Maximalsatz auf 25+ Wdh.!' }
         ]
       }
     ];
 
+    let notes = JSON.parse(localStorage.getItem('pullup_25_notes') || '[]');
+
     function renderPlan() {
-      planData.forEach(phase => {
-        const container = document.getElementById(phase.phaseId);
-        phase.items.forEach(item => {
-          const isChecked = localStorage.getItem(item.id) === 'true';
-          const el = document.createElement('div');
-          el.className = 'workout-item';
-          el.innerHTML = `
-            <input type="checkbox" id="${item.id}" ${isChecked ? 'checked' : ''} onchange="toggleCheck('${item.id}')">
+      const container = document.getElementById('plan-container');
+      container.innerHTML = '';
+
+      weeks.forEach(week => {
+        const card = document.createElement('div');
+        card.className = 'week-card';
+        card.innerHTML = `<div class="week-title">${week.title}</div>`;
+
+        week.days.forEach(day => {
+          const isChecked = localStorage.getItem('p25_' + day.id) === 'true';
+          const item = document.createElement('div');
+          item.className = 'workout-item';
+          item.innerHTML = `
+            <input type="checkbox" id="${day.id}" ${isChecked ? 'checked' : ''} onchange="toggleCheck('${day.id}')">
             <div class="workout-info">
-              <div class="workout-title">${item.title}</div>
-              <div class="workout-detail">${item.detail}</div>
+              <div class="workout-title">${day.title}</div>
+              <div class="workout-detail">${day.detail}</div>
             </div>
           `;
-          container.appendChild(el);
+          card.appendChild(item);
         });
+
+        container.appendChild(card);
       });
+      updateProgress();
     }
 
     function toggleCheck(id) {
-      const checkbox = document.getElementById(id);
-      localStorage.setItem(id, checkbox.checked);
+      const cb = document.getElementById(id);
+      localStorage.setItem('p25_' + id, cb.checked);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const total = 18;
+      let done = 0;
+      weeks.forEach(w => w.days.forEach(d => {
+        if (localStorage.getItem('p25_' + d.id) === 'true') done++;
+      }));
+      const pct = Math.round((done / total) * 100);
+      document.getElementById('progress-text').innerText = `${done} / ${total} (${pct}%)`;
+      document.getElementById('progress-fill').style.width = pct + '%';
+    }
+
+    function addNote() {
+      const inp = document.getElementById('inp-note');
+      const txt = inp.value.trim();
+      if (!txt) return;
+      const date = new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+      notes.unshift({ id: Date.now(), date, txt });
+      localStorage.setItem('pullup_25_notes', JSON.stringify(notes));
+      inp.value = '';
+      renderNotes();
+      showMsg('Notiz gespeichert!');
+    }
+
+    function delNote(id) {
+      notes = notes.filter(n => n.id !== id);
+      localStorage.setItem('pullup_25_notes', JSON.stringify(notes));
+      renderNotes();
+    }
+
+    function renderNotes() {
+      const list = document.getElementById('notes-list');
+      list.innerHTML = '';
+      if (notes.length === 0) {
+        list.innerHTML = '<div style="font-size:0.8rem;color:#94a3b8;">Noch keine Notizen.</div>';
+        return;
+      }
+      notes.forEach(n => {
+        const div = document.createElement('div');
+        div.className = 'log-item';
+        div.innerHTML = `<span><strong>${n.date}:</strong> ${n.txt}</span><button class="del-btn" onclick="delNote(${n.id})">✕</button>`;
+        list.appendChild(div);
+      });
+    }
+
+    function copyBackup() {
+      let out = 'Mission 25 Klimmzüge - Backup\n';
+      weeks.forEach(w => w.days.forEach(d => {
+        const st = localStorage.getItem('p25_' + d.id) === 'true' ? '[x]' : '[ ]';
+        out += `${st} ${w.title} - ${d.title}\n`;
+      }));
+      if (notes.length > 0) {
+        out += '\nNotizen:\n';
+        notes.forEach(n => { out += `- ${n.date}: ${n.txt}\n`; });
+      }
+      navigator.clipboard.writeText(out).then(() => showMsg('Fortschritt & Notizen kopiert!'));
+    }
+
+    function showMsg(t) {
+      const el = document.getElementById('status-msg');
+      el.innerText = t;
+      setTimeout(() => el.innerText = '', 2500);
     }
 
     renderPlan();
+    renderNotes();
   </script>
 </body>
 </html>
